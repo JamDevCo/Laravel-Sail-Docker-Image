@@ -13,6 +13,12 @@ if [ ! -d /.composer ]; then
 fi
 
 chmod -R ugo+rw /.composer
+# chown -R sail:sail /var/www/html
+
+if test -f "/usr/local/bin/upstart-container"; then
+    chmod +x /usr/local/bin/upstart-container
+    bash /usr/local/bin/upstart-container
+fi
 
 if [ $# -gt 0 ];then
     exec gosu $WWWUSER "$@"
