@@ -38,7 +38,7 @@ jobs:
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+        uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -55,9 +55,25 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image for PHP 7.4
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        uses: docker/build-push-action@v4
         with:
           context: ./docker/php-7.4
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: "php7-4-${{ steps.meta.outputs.labels }}"
+
+      - name: Build and push Docker image for PHP 8.0
+        uses: docker/build-push-action@v4
+        with:
+          context: ./docker/php-8.0
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: "php8-0-${{ steps.meta.outputs.labels }}"
+
+      - name: Build and push Docker image for PHP 8.2
+        uses: docker/build-push-action@v4
+        with:
+          context: ./docker/php-8.2
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: "php8-2-${{ steps.meta.outputs.labels }}"
