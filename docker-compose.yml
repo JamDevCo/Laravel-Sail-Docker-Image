@@ -3,13 +3,13 @@ version: '3.7'
 services:
     laravel7:
         build:
-            context: docker/php-7.4
+            context: docker/php-8.2
             dockerfile: Dockerfile
             # args:
             #     WWWGROUP: '${WWWGROUP}'
             args:
                 WWWGROUP: 1000
-        image: realworldio/laravel-sail:7.4
+        image: realworldio/laravel-sail:8.2
         # ports:
         #     - '${APP_PORT:-80}:80'
         # env_file: ./.env_file
