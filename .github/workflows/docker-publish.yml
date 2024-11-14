@@ -48,8 +48,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
-            type=semver,pattern={{version}}
+            type=ref,event=8.0
+            type=semver,pattern=8.0-{{version}}
             type=sha
 
       - name: Build and push Docker image for PHP 8.0
@@ -57,9 +57,7 @@ jobs:
         with:
           context: ./docker/php-8.0
           push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            8.0-${{ steps.meta.outputs.tags || 'latest' }}
-            8.0-latest
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
   # Job for building PHP 8.1 image
@@ -76,8 +74,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
-            type=semver,pattern={{version}}
+            type=ref,event=8.1
+            type=semver,pattern=8.1-{{version}}
             type=sha
 
       - name: Build and push Docker image for PHP 8.1
@@ -85,9 +83,7 @@ jobs:
         with:
           context: ./docker/php-8.1
           push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            8.1-${{ steps.meta.outputs.tags || 'latest' }}
-            8.1-latest
+          tags:  ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
   # Job for building PHP 8.2 image
@@ -104,8 +100,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
-            type=semver,pattern={{version}}
+            type=ref,event=8.2
+            type=semver,pattern=8.2-{{version}}
             type=sha
 
       - name: Build and push Docker image for PHP 8.2
@@ -113,9 +109,7 @@ jobs:
         with:
           context: ./docker/php-8.2
           push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            8.2-${{ steps.meta.outputs.tags || 'latest' }}
-            8.2-latest
+          tags:  ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
   # Job for building PHP 8.3 image
@@ -132,8 +126,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
-            type=semver,pattern={{version}}
+            type=ref,event=8.3
+            type=semver,pattern=8.3-{{version}}
             type=sha
 
       - name: Build and push Docker image for PHP 8.3
@@ -141,7 +135,5 @@ jobs:
         with:
           context: ./docker/php-8.3
           push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            8.3-${{ steps.meta.outputs.tags || 'latest' }}
-            8.3-latest
+          tags:  ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
