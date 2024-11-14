@@ -50,7 +50,7 @@ jobs:
         with:
           context: ./docker/php-7.4
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags || 'latest' }}
+          tags: ${{ steps.meta.outputs.tags || '7.4-latest' }}
           labels: ${{ steps.meta.outputs.labels }}
 
       # Build and push Docker image for PHP 8.0
@@ -59,7 +59,7 @@ jobs:
         with:
           context: ./docker/php-8.0
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags || 'latest' }}
+          tags: ${{ steps.meta.outputs.tags || '8.0-latest' }}
           labels: ${{ steps.meta.outputs.labels }}
 
       # Build and push Docker image for PHP 8.1
@@ -68,7 +68,7 @@ jobs:
         with:
           context: ./docker/php-8.1
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags || 'latest' }}
+          tags: ${{ steps.meta.outputs.tags || '8.1-latest' }}
           labels: ${{ steps.meta.outputs.labels }}
 
       # Build and push Docker image for PHP 8.2
@@ -77,7 +77,7 @@ jobs:
         with:
           context: ./docker/php-8.2
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags || 'latest' }}
+          tags: ${{ steps.meta.outputs.tags || '8.2-latest' }}
           labels: ${{ steps.meta.outputs.labels }}
 
       # Build and push Docker image for PHP 8.3
