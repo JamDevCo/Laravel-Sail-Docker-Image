@@ -48,9 +48,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=8.0
             type=semver,pattern=8.0-{{version}}
-            type=sha
+            8.0
 
       - name: Build and push Docker image for PHP 8.0
         uses: docker/build-push-action@v4
@@ -74,9 +73,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=8.1
             type=semver,pattern=8.1-{{version}}
-            type=sha
+            8.1
 
       - name: Build and push Docker image for PHP 8.1
         uses: docker/build-push-action@v4
@@ -100,9 +98,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=8.2
             type=semver,pattern=8.2-{{version}}
-            type=sha
+            8.2
 
       - name: Build and push Docker image for PHP 8.2
         uses: docker/build-push-action@v4
@@ -126,9 +123,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=8.3
             type=semver,pattern=8.3-{{version}}
-            type=sha
+            8.3
 
       - name: Build and push Docker image for PHP 8.3
         uses: docker/build-push-action@v4
