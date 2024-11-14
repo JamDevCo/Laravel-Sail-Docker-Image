@@ -14,6 +14,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Add the Ondřej Surý PPA for PHP and update the package lists
 RUN apt-get update \
+    && apt-get install -y gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev \
     && apt-get install -y software-properties-common \
     && add-apt-repository ppa:ondrej/php -y \
     && apt-get update
