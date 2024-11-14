@@ -1,30 +1,20 @@
 name: Docker
 
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 on:
   schedule:
     - cron: '30 0 * * *'
   push:
     branches: [ master ]
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+    tags: [ 'v*.*.*' ]  # Publish semver tags as releases
   pull_request:
     branches: [ master, build ]
 
 env:
-  # Use docker.io for Docker Hub if empty
   REGISTRY: docker.io
-  # github.repository as <account>/<repo>
   IMAGE_NAME: realworldio/laravel-sail
-
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -34,8 +24,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
+      # Login to Docker registry except on PR
       - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v2
@@ -45,43 +34,57 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       # Extract metadata (tags, labels) for Docker
-      # https://github.com/docker/metadata-action
-#       - name: Extract Docker metadata
-#         id: meta
-#         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-#         with:
-#           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=sha
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
+      # Build and push Docker image for PHP 7.4
       - name: Build and push Docker image for PHP 7.4
         uses: docker/build-push-action@v4
         with:
           context: ./docker/php-7.4
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: "php7-4-${{ steps.meta.outputs.labels }}"
+          tags: ${{ steps.meta.outputs.tags || 'latest' }}
+          labels: ${{ steps.meta.outputs.labels }}
 
+      # Build and push Docker image for PHP 8.0
       - name: Build and push Docker image for PHP 8.0
         uses: docker/build-push-action@v4
         with:
           context: ./docker/php-8.0
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: "php8-0-${{ steps.meta.outputs.labels }}"
+          tags: ${{ steps.meta.outputs.tags || 'latest' }}
+          labels: ${{ steps.meta.outputs.labels }}
 
+      # Build and push Docker image for PHP 8.1
       - name: Build and push Docker image for PHP 8.1
         uses: docker/build-push-action@v4
         with:
           context: ./docker/php-8.1
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: "php8-1-${{ steps.meta.outputs.labels }}"
+          tags: ${{ steps.meta.outputs.tags || 'latest' }}
+          labels: ${{ steps.meta.outputs.labels }}
 
+      # Build and push Docker image for PHP 8.2
       - name: Build and push Docker image for PHP 8.2
         uses: docker/build-push-action@v4
         with:
           context: ./docker/php-8.2
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: "php8-2-${{ steps.meta.outputs.labels }}"
+          tags: ${{ steps.meta.outputs.tags || 'latest' }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      # Build and push Docker image for PHP 8.3
+      - name: Build and push Docker image for PHP 8.3
+        uses: docker/build-push-action@v4
+        with:
+          context: ./docker/php-8.3
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags || 'latest' }}
+          labels: ${{ steps.meta.outputs.labels }}
