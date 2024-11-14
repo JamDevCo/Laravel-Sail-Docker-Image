@@ -45,13 +45,13 @@ jobs:
             type=sha
 
       # Build and push Docker image for PHP 7.4
-      - name: Build and push Docker image for PHP 7.4
-        uses: docker/build-push-action@v4
-        with:
-          context: ./docker/php-7.4
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags || '7.4-latest' }}
-          labels: ${{ steps.meta.outputs.labels }}
+      # - name: Build and push Docker image for PHP 7.4
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: ./docker/php-7.4
+      #     push: ${{ github.event_name != 'pull_request' }}
+      #     tags: ${{ steps.meta.outputs.tags || '7.4-latest' }}
+      #     labels: ${{ steps.meta.outputs.labels }}
 
       # Build and push Docker image for PHP 8.0
       - name: Build and push Docker image for PHP 8.0
