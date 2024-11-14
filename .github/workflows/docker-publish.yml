@@ -5,7 +5,7 @@ on:
     - cron: '30 0 * * *'
   push:
     branches: [ master ]
-    tags: [ 'v*.*.*' ]  # Publish semver tags as releases
+    tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ master, build ]
 
@@ -14,7 +14,6 @@ env:
   IMAGE_NAME: realworldio/laravel-sail
 
 jobs:
-  # Job for logging into Docker registry
   login:
     runs-on: ubuntu-latest
     permissions:
@@ -55,7 +54,6 @@ jobs:
 
       - name: Build and push Docker image for PHP 8.0
         uses: docker/build-push-action@v4
-        # continue-on-error: true
         with:
           context: ./docker/php-8.0
           push: ${{ github.event_name != 'pull_request' }}
@@ -82,11 +80,12 @@ jobs:
 
       - name: Build and push Docker image for PHP 8.1
         uses: docker/build-push-action@v4
-        # continue-on-error: true
         with:
           context: ./docker/php-8.1
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags || '8.1' }}
+          tags: |
+            8.1-${{ steps.meta.outputs.tags }}
+            8.1-latest
           labels: ${{ steps.meta.outputs.labels }}
 
   # Job for building PHP 8.2 image
@@ -109,11 +108,12 @@ jobs:
 
       - name: Build and push Docker image for PHP 8.2
         uses: docker/build-push-action@v4
-        # continue-on-error: true
         with:
           context: ./docker/php-8.2
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags || '8.2' }}
+          tags: |
+            8.2-${{ steps.meta.outputs.tags }}
+            8.2-latest
           labels: ${{ steps.meta.outputs.labels }}
 
   # Job for building PHP 8.3 image
@@ -136,7 +136,6 @@ jobs:
 
       - name: Build and push Docker image for PHP 8.3
         uses: docker/build-push-action@v4
-        # continue-on-error: true
         with:
           context: ./docker/php-8.3
           push: ${{ github.event_name != 'pull_request' }}
