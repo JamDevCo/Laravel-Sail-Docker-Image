@@ -35,7 +35,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
   # Job for building PHP 8.0 image
-  build-php-8.0:
+  build-php-8-0:
     runs-on: ubuntu-latest
     needs: login
     steps:
@@ -58,12 +58,13 @@ jobs:
           context: ./docker/php-8.0
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            8.0-${{ steps.meta.outputs.tags }}
-            8.0-latest
+            8.0${{ steps.meta.outputs.tags || '' }}
+            8.0
+            latest
           labels: ${{ steps.meta.outputs.labels }}
 
   # Job for building PHP 8.1 image
-  build-php-8.1:
+  build-php-8-1:
     runs-on: ubuntu-latest
     needs: login
     steps:
@@ -86,12 +87,12 @@ jobs:
           context: ./docker/php-8.1
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            8.1-${{ steps.meta.outputs.tags }}
-            8.1-latest
+            8.1${{ steps.meta.outputs.tags || '' }}
+            8.1
           labels: ${{ steps.meta.outputs.labels }}
 
   # Job for building PHP 8.2 image
-  build-php-8.2:
+  build-php-8-2:
     runs-on: ubuntu-latest
     needs: login
     steps:
@@ -114,12 +115,12 @@ jobs:
           context: ./docker/php-8.2
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            8.2-${{ steps.meta.outputs.tags }}
-            8.2-latest
+            8.2${{ steps.meta.outputs.tags || '' }}
+            8.2
           labels: ${{ steps.meta.outputs.labels }}
 
   # Job for building PHP 8.3 image
-  build-php-8.3:
+  build-php-8-3:
     runs-on: ubuntu-latest
     needs: login
     steps:
@@ -142,6 +143,6 @@ jobs:
           context: ./docker/php-8.3
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            8.3-${{ steps.meta.outputs.tags }}
-            8.3-latest
+            8.3${{ steps.meta.outputs.tags || '' }}
+            8.3
           labels: ${{ steps.meta.outputs.labels }}
