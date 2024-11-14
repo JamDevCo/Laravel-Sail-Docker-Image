@@ -59,7 +59,7 @@ jobs:
         with:
           context: ./docker/php-8.0
           push: ${{ github.event_name != 'pull_request' }}
-          tags: 8.0${{ steps.meta.outputs.tags || '' }}
+          tags: ${{'8.0'}}${{ steps.meta.outputs.tags || '' }}
           labels: ${{ steps.meta.outputs.labels }}
 
   # Job for building PHP 8.1 image
@@ -86,7 +86,7 @@ jobs:
         with:
           context: ./docker/php-8.1
           push: ${{ github.event_name != 'pull_request' }}
-          tags: 8.1${{ steps.meta.outputs.tags || '' }}
+          tags: ${{'8.1'}}${{ steps.meta.outputs.tags || '' }}
           labels: ${{ steps.meta.outputs.labels }}
 
   # Job for building PHP 8.2 image
@@ -113,7 +113,7 @@ jobs:
         with:
           context: ./docker/php-8.2
           push: ${{ github.event_name != 'pull_request' }}
-          tags: 8.2${{ steps.meta.outputs.tags || '' }}
+          tags: ${{'8.2'}}${{ steps.meta.outputs.tags || '' }}
           labels: ${{ steps.meta.outputs.labels }}
 
   # Job for building PHP 8.3 image
@@ -140,5 +140,5 @@ jobs:
         with:
           context: ./docker/php-8.3
           push: ${{ github.event_name != 'pull_request' }}
-          tags: 8.3${{ steps.meta.outputs.tags || '' }}
+          tags: ${{'8.3'}}${{ steps.meta.outputs.tags || '' }}
           labels: ${{ steps.meta.outputs.labels }}
