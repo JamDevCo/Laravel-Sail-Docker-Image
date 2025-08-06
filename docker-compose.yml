@@ -1,7 +1,7 @@
 # For more information: https://laravel.com/docs/sail
 version: '3.7'
 services:
-    laravel7:
+    laravel:
         build:
             context: docker/php-8.2
             dockerfile: Dockerfile

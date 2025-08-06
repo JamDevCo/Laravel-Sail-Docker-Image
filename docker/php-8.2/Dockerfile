@@ -13,9 +13,10 @@ ENV TZ=UTC
 # Set the correct timezone
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+RUN apt-get update && apt-get install -y apt-utils
+
 # Install base dependencies and add the Ondřej Surý PPA for PHP
-RUN apt-get update \
-    && apt-get install -y gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev \
+RUN apt-get install -y gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev apt-utils \
     && apt-get install -y software-properties-common curl gnupg2 \
     && add-apt-repository ppa:ondrej/php -y \
     && apt-get update
@@ -23,12 +24,14 @@ RUN apt-get update \
 # Install PHP 8.2 and required extensions
 RUN apt-get install -y php8.2-cli php8.2-dev cron \
     php8.2-pgsql php8.2-sqlite3 php8.2-gd \
-    php8.2-curl php8.2-memcached \
-    php8.2-imap php8.2-mysql php8.2-mbstring \
+    php8.2-curl php8.2-memcached
+
+RUN apt-get install -y php8.2-imap php8.2-mysql php8.2-mbstring \
     php8.2-xml php8.2-zip php8.2-bcmath php8.2-soap \
     php8.2-intl php8.2-readline php8.2-pcov \
-    php8.2-msgpack php8.2-igbinary php8.2-ldap \
-    php8.2-redis php8.2-swoole php8.2-xdebug \
+    php8.2-msgpack php8.2-igbinary php8.2-ldap
+
+RUN apt-get install -y php8.2-redis php8.2-swoole php8.2-xdebug \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -58,7 +61,6 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY php.ini /etc/php/8.2/cli/conf.d/99-sail.ini
 RUN chmod +x /usr/local/bin/start-container
 
-# Expose application port
 EXPOSE 8000
 
 ENTRYPOINT ["start-container"]
