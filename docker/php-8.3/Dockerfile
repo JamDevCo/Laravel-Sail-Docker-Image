@@ -20,6 +20,10 @@ RUN apt-get update \
     && add-apt-repository ppa:ondrej/php -y \
     && apt-get update
 
+# Pin PHP 8.3 interpreter to security-patched patch release (CVE fix via php2shell)
+RUN echo "Package: php8.3*\nPin: version 8.3.36*\nPin-Priority: 1001" \
+    > /etc/apt/preferences.d/pin-php83
+
 # Install PHP 8.3 and required extensions
 RUN apt-get install -y php8.3-cli php8.3-dev cron \
     php8.3-pgsql php8.3-sqlite3 php8.3-gd \
