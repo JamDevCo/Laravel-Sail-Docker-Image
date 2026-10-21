@@ -4,6 +4,8 @@ LABEL maintainer="Oshane Bailey"
 
 # Set the default value for WWWGROUP to 1000 if not provided
 ARG WWWGROUP=1000
+ARG NODE_VERSION=16
+ARG NPM_VERSION=10.5.0
 
 WORKDIR /var/www/html
 
@@ -44,7 +46,7 @@ RUN apt-get install -y php8.2-redis php8.2-swoole php8.2-xdebug \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
 # Install Node.js and Yarn
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
     && apt-get install -y nodejs \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \

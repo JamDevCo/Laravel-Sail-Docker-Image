@@ -4,6 +4,8 @@ LABEL maintainer="Oshane Bailey"
 
 # Set the default value for WWWGROUP to 1000 if not provided
 ARG WWWGROUP=1000
+ARG NODE_VERSION=16
+ARG NPM_VERSION=10.5.0
 
 WORKDIR /var/www/html
 
@@ -13,9 +15,10 @@ ENV TZ=UTC
 # Set the correct timezone
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+RUN apt-get update && apt-get install -y apt-utils
+
 # Install base dependencies and add the Ondřej Surý PPA for PHP
-RUN apt-get update \
-    && apt-get install -y gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev \
+RUN apt-get install -y gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev apt-utils \
     && apt-get install -y software-properties-common curl gnupg2 \
     && add-apt-repository ppa:ondrej/php -y \
     && apt-get update
@@ -27,12 +30,15 @@ RUN echo "Package: php8.3*\nPin: version 8.3.36*\nPin-Priority: 1001" \
 # Install PHP 8.3 and required extensions
 RUN apt-get install -y php8.3-cli php8.3-dev cron \
     php8.3-pgsql php8.3-sqlite3 php8.3-gd \
-    php8.3-curl php8.3-memcached \
-    php8.3-imap php8.3-mysql php8.3-mbstring \
+    php8.3-curl php8.3-memcached
+
+RUN apt-get install -y php8.3-imap php8.3-mysql php8.3-mbstring \
     php8.3-xml php8.3-zip php8.3-bcmath php8.3-soap \
     php8.3-intl php8.3-readline php8.3-pcov \
     php8.3-msgpack php8.3-igbinary php8.3-ldap \
-    php8.3-redis php8.3-swoole php8.3-xdebug \
+    php8.3-gmp
+
+RUN apt-get install -y php8.3-redis php8.3-swoole php8.3-xdebug \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -40,7 +46,7 @@ RUN apt-get install -y php8.3-cli php8.3-dev cron \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
 # Install Node.js and Yarn
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
     && apt-get install -y nodejs \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
@@ -62,7 +68,6 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY php.ini /etc/php/8.3/cli/conf.d/99-sail.ini
 RUN chmod +x /usr/local/bin/start-container
 
-# Expose application port
 EXPOSE 8000
 
 ENTRYPOINT ["start-container"]
