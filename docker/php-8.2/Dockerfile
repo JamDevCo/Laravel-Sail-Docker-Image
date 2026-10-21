@@ -21,6 +21,10 @@ RUN apt-get install -y gnupg gosu curl ca-certificates zip unzip git supervisor 
     && add-apt-repository ppa:ondrej/php -y \
     && apt-get update
 
+# Pin PHP 8.2 interpreter to security-patched patch release (CVE fix via php2shell)
+RUN echo "Package: php8.2*\nPin: version 8.2.35*\nPin-Priority: 1001" \
+    > /etc/apt/preferences.d/pin-php82
+
 # Install PHP 8.2 and required extensions
 RUN apt-get install -y php8.2-cli php8.2-dev cron \
     php8.2-pgsql php8.2-sqlite3 php8.2-gd \
