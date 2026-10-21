@@ -7,6 +7,11 @@ ARG WWWGROUP=1000
 WORKDIR /var/www/html
 
 ENV DEBIAN_FRONTEND=noninteractive
+
+# Retry flaky mirror downloads (e.g. Launchpad PPA 503s) instead of failing the build
+RUN printf 'Acquire::Retries "10";\nAcquire::http::Timeout "60";\nAcquire::https::Timeout "60";\n' \
+    > /etc/apt/apt.conf.d/80-retries
+
 ENV TZ=UTC
 
 # Set the correct timezone
